@@ -1,6 +1,5 @@
 import logging
 import os
-
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -10,24 +9,18 @@ from telegram.ext import (
     filters,
 )
 
-# Logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
 )
 
-# Token from Render Environment Variable
 TOKEN = os.getenv("TOKEN")
 
-
-# Start Command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🎬 Welcome!\nMovie ya series ka naam likho, main link bhej dunga."
     )
 
-
-# Movie Search (Demo Database)
 async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.message.text.lower().strip()
 
@@ -46,7 +39,6 @@ async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "❌ Movie not found.\nAdmin se request karo."
         )
 
-
 def main():
     if not TOKEN:
         raise ValueError("TOKEN environment variable not set")
@@ -58,7 +50,6 @@ def main():
 
     print("🤖 Bot is running...")
     app.run_polling()
-
 
 if __name__ == "__main__":
     main()
