@@ -1,5 +1,6 @@
 import logging
 import os
+
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -9,6 +10,7 @@ from telegram.ext import (
     filters,
 )
 
+# Logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
@@ -16,10 +18,12 @@ logging.basicConfig(
 
 TOKEN = os.getenv("TOKEN")
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🎬 Welcome!\nMovie ya series ka naam likho, main link bhej dunga."
     )
+
 
 async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.message.text.lower().strip()
@@ -39,17 +43,19 @@ async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "❌ Movie not found.\nAdmin se request karo."
         )
 
+
 def main():
     if not TOKEN:
-        raise ValueError("TOKEN environment variable not set")
+        raise RuntimeError("TOKEN not found")
 
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search_movie))
 
-    print("🤖 Bot is running...")
+    print("🤖 Bot started...")
     app.run_polling()
+
 
 if __name__ == "__main__":
     main()
