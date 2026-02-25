@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 # 🔑 Apna Bot Token Yahan Paste Karna
-TOKEN = "PASTE_YOUR_BOT_TOKEN_HERE"
+TOKEN = "8767739250:AAEaL1fvmN9A_W0aouLesfUcBK6CEYYiYgk"
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
