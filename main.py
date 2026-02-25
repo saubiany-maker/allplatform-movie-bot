@@ -1,14 +1,24 @@
 import logging
+import os
+
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    MessageHandler,
+    ContextTypes,
+    filters,
+)
 
-# 🔑 Apna Bot Token Yahan Paste Karna
-TOKEN = "8767739250:AAEaL1fvmN9A_W0aouLesfUcBK6CEYYiYgk"
-
+# Logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
+    level=logging.INFO,
 )
+
+# Token from Render Environment Variable
+TOKEN = os.getenv("TOKEN")
+
 
 # Start Command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -16,14 +26,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🎬 Welcome!\nMovie ya series ka naam likho, main link bhej dunga."
     )
 
-# Movie Search Logic (Demo)
+
+# Movie Search (Demo Database)
 async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.message.text.lower()
+    query = update.message.text.lower().strip()
 
     movie_db = {
         "avatar": "https://t.me/yourchannel/avatar",
         "kgf": "https://t.me/yourchannel/kgf",
-        "pushpa": "https://t.me/yourchannel/pushpa"
+        "pushpa": "https://t.me/yourchannel/pushpa",
     }
 
     if query in movie_db:
@@ -35,7 +46,11 @@ async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "❌ Movie not found.\nAdmin se request karo."
         )
 
+
 def main():
+    if not TOKEN:
+        raise ValueError("TOKEN environment variable not set")
+
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -43,6 +58,7 @@ def main():
 
     print("🤖 Bot is running...")
     app.run_polling()
+
 
 if __name__ == "__main__":
     main()
