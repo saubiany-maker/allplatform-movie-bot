@@ -16,6 +16,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
+# Token from Render Environment Variable
 TOKEN = os.getenv("TOKEN")
 
 
@@ -46,14 +47,14 @@ async def search_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     if not TOKEN:
-        raise RuntimeError("TOKEN not found")
+        raise ValueError("TOKEN not found. Set TOKEN in Render Environment.")
 
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search_movie))
 
-    print("🤖 Bot started...")
+    print("🤖 Bot is running...")
     app.run_polling()
 
 
